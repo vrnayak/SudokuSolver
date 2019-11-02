@@ -12,6 +12,8 @@
 #define sudoku_h
 
 #include <iostream>
+#include <string>
+#include <vector>
 
 
 class Grid {
@@ -28,16 +30,35 @@ public:
     // EFFECTS: Returns the value at given row & column
     int at(int row, int col) const;
     
+    // REQUIRES: index is less than GRID_SIZE
+    // EFFECTS: Returns row of cell with given index
+    int getRow(int index) const;
+    
+    // REQUIRES: index is less than GRID_SIZE
+    // EFFECTS: Returns column of cell with given index
+    int getCol(int index) const;
+    
+    // REQUIRES: 0 <= row < 9 && 0 <= col < 9
+    // EFFECTS: Returns index of cell at given row and column
+    int getIndex(int row, int col) const;
+    
     // REQUIRES: 0 <= row < 9 && 0 <= col < 9 && 1 <= value <= 9
     // MODIFIES: grid
     // EFFECTS: Fills in the cell at given row & column with given value
+    //          only if it would result in a valid sudoku grid
     void set(int row, int col, int value);
+    
+    // REQUIRES: 0 <= row < 9 && 0 <= col < 9 && 1 <= value <= 9
+    // MODIFIES: grid
+    // EFFECTS: Checks whether assigning cell at given row & column the
+    //          the given value is a valid move
+    bool checkIfValid(int row, int col, int value);
     
     // EFFECTS: Returns index of first empty cell in sudoku grid
     int findFirstEmptyCell() const;
     
     // EFFECTS: Checks whether current sudoku grid is valid
-    bool checkIfValid() const;
+    bool validateGrid() const;
     
     // EFFECTS: Prints sudoku grid to &os
     void print(std::ostream &os) const;
@@ -47,10 +68,12 @@ private:
     static const int GRID_SIZE = 81;
     static const int ROW_SIZE = 9;
     static const int COL_SIZE = 9;
-    int grid[GRID_SIZE];
+    int grid[ROW_SIZE][COL_SIZE];
     
-    // EFFECTS: Checks whether cell position is valid
-    bool checkValidCell(int row, int col) const;
+    // EFFECTS: Returns number of occurrences of value in given region,
+    //          which is specfied by areaString ("row", "col", "box")
+    //          start refers to first cell in specified region
+    int getCount(int value, int start, std::string regionType) const;
 };
 
 
