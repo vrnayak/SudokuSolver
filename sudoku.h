@@ -57,9 +57,6 @@ public:
     // EFFECTS: Returns index of first empty cell in sudoku grid
     int findFirstEmptyCell() const;
     
-    // EFFECTS: Checks whether current sudoku grid is valid
-    bool validateGrid() const;
-    
     // EFFECTS: Prints sudoku grid to &os
     void print(std::ostream &os) const;
     
