@@ -28,7 +28,6 @@ Grid::Grid() {
 Grid::Grid(istream &is) {
     
     int cellNum;
-    
     for (int row = 0; row < ROW_SIZE; ++row) {
         for (int col = 0; col < COL_SIZE; ++col) {
             is >> cellNum;
@@ -98,17 +97,15 @@ int Grid::findFirstEmptyCell() const {
     return -1;
 }
 
-// EFFECTS: Checks whether sudoku grid is correctly solved
-bool Grid::validateGrid() const {
-    
-    
-    return false;
-    
-}
-
 // EFFECTS: Prints sudoku grid to &os
 void Grid::print(std::ostream &os) const {
     
+    for (int row = 0; row < ROW_SIZE; ++row) {
+        for (int col = 0; col < COL_SIZE; ++col) {
+            os << at(row, col) << " ";
+        }
+        cout << endl;
+    }
 }
 
 // EFFECTS: Returns number of occurrences of value in given region,
