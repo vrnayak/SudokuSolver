@@ -17,6 +17,9 @@
 
 
 class Grid {
+    
+    // OVERVIEW: A 9x9 Sudoku Grid with basic access methods
+    
 public:
     
     // EFFECTS: Initializes a 9x9 grid object and fills it with 0's
@@ -37,6 +40,10 @@ public:
     // REQUIRES: index is less than GRID_SIZE
     // EFFECTS: Returns column of cell with given index
     int getCol(int index) const;
+    
+    // REQUIRES: index is less than GRID_SIZE
+    // EFFECTS: Returns box of cell with given index
+    int getBox(int index) const;
     
     // REQUIRES: 0 <= row < 9 && 0 <= col < 9
     // EFFECTS: Returns index of cell at given row and column
@@ -72,7 +79,6 @@ private:
     //          start refers to first cell in specified region
     int getCount(int value, int start, std::string regionType) const;
 };
-
 
 // Sudoku Solving Algorithms
 
