@@ -5,7 +5,7 @@
 //  OVERVIEW: Program completes a partially filled in sudoku grid
 //
 //  Module Name: sudoku.cpp
-//  Module Description: Grid Class & Sudoku Function Implementations
+//  Module Description: Grid Class & Sudoku Function Definitions
 //
 
 #include <iostream>
@@ -54,6 +54,42 @@ int Grid::getCol(int index) const {
     return index % ROW_SIZE;
 }
 
+// EFFECTS: Returns box of cell with given index
+int Grid::getBox(int index) const {
+    
+    if (index >= 0 && index < 27) {
+        
+        if (index % 9 == 0 || index % 9 == 1 || index % 9 == 2) {
+            return 0;
+        } else if (index % 9 == 3 || index % 9 == 4 || index % 9 == 5) {
+            return 1;
+        } else if (index % 9 == 6 || index % 9 == 7 || index % 9 == 8) {
+            return 2;
+        }
+        
+    } else if (index >= 27 && index < 54) {
+        
+        if (index % 9 == 0 || index % 9 == 1 || index % 9 == 2) {
+            return 3;
+        } else if (index % 9 == 3 || index % 9 == 4 || index % 9 == 5) {
+            return 4;
+        } else if (index % 9 == 6 || index % 9 == 7 || index % 9 == 8) {
+            return 5;
+        }
+        
+    } else {
+        
+        if (index % 9 == 0 || index % 9 == 1 || index % 9 == 2) {
+            return 6;
+        } else if (index % 9 == 3 || index % 9 == 4 || index % 9 == 5) {
+            return 7;
+        } else if (index % 9 == 6 || index % 9 == 7 || index % 9 == 8) {
+            return 8;
+        }
+    }
+    return 0;
+}
+
 // EFFECTS: Returns index of cell at given row and column
 int Grid::getIndex(int row, int col) const {
     
@@ -70,7 +106,7 @@ bool Grid::checkIfValid(int rowCheck, int colCheck, int value) {
     
     set(rowCheck, colCheck, value);
     int cellIndex = getIndex(rowCheck, colCheck);
-    int boxStartIndex = cellIndex - (cellIndex % 9);
+    int boxStartIndex = 27 * (getBox(cellIndex) / 3) + 3 * (getBox(cellIndex) % 3);
     
     if (getCount(value, cellIndex, "row") > 1 ||
         getCount(value, cellIndex, "col") > 1 ||
@@ -90,7 +126,7 @@ int Grid::findFirstEmptyCell() const {
     for (int row = 0; row < ROW_SIZE; ++row) {
         for (int col = 0; col < COL_SIZE; ++col) {
             if (at(row, col) == 0) {
-                return static_cast<int>(&grid[row][col] - &grid[0][0]);
+                return getIndex(row, col);
             }
         }
     }
@@ -121,16 +157,12 @@ int Grid::getCount(int value, int start, std::string regionType) const {
                 count++;
             }
         }
-        return count;
-        
     } else if (regionType == "col") {
         for (int row = 0; row < ROW_SIZE; ++row) {
             if (at(row, getCol(start)) == value) {
                 count++;
             }
         }
-        return count;
-        
     } else if (regionType == "box") {
         for (int rowDiff = 0; rowDiff < 3; ++rowDiff) {
             for (int colDiff = 0; colDiff < 3; ++colDiff) {
@@ -139,7 +171,6 @@ int Grid::getCount(int value, int start, std::string regionType) const {
                 }
             }
         }
-        return count;
     }
-    return -1;
+    return count;
 }
