@@ -1,9 +1,38 @@
-//
-//  solver.cpp
-//  Sudoku Solver
-//
-//  Created by Vishal Nayak on 3/12/20.
-//  Copyright © 2020 Vishal Nayak. All rights reserved.
+//  Project Identifier: N/A
+//              Author: Vishal Nayak
+//             Project: Sudoku Solver
+//              Module: solver.cpp
+//         Description: Sudoku Solver Algorithms Implementation
 //
 
-#include "solver.hpp"
+#include <iostream>
+#include "solver.h"
+
+using namespace std;
+
+// EFFECTS: Performs brute force solving algorithm on sudoku grid
+void bruteForceSolve(Grid &grid) {
+	
+	for (int i = 1; i <= 9; ++i) {
+		int cell = grid.findFirstEmptyCell();
+		if (cell == -1) break;
+		
+		if (grid.checkIfValid(grid.getRow(cell), grid.getCol(cell), i)) {
+			grid.set(grid.getRow(cell), grid.getCol(cell), i);
+			bruteForceSolve(grid);
+		} // if...else
+	} // for...i
+} // bruteForceSolve()
+
+// EFFECTS: Performs simple process of elimination algorithm to fill in cells
+void simpleSolve(Grid &sudokuGrid) {
+	
+	
+} // simpleSolve()
+
+// EFFECTS: Performs basic algorithm utilized by humans to solve sudokus
+void smartSolve(Grid &sudokuGrid) {
+	
+} // smartSolve()
+
+
