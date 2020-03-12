@@ -77,21 +77,4 @@ private:
     int getCount(int value, int start, std::string regionType) const;
 };
 
-// Sudoku Solving Algorithms
-
-// REQUIRES: sudokuGrid points to a valid Grid
-// MODIFIES: *sudokuGrid
-// EFFECTS: Performs brute force solving algorithm on sudoku grid
-void bruteForceSolve(Grid *sudokuGrid);
-
-// REQUIRES: sudokuGrid points to a valid Grid
-// MODIFIES: *sudokuGrid
-// EFFECTS: Performs simple process of elimination algorithm to fill in cells
-void simpleSolve(Grid *sudokuGrid);
-
-// REQUIRES: sudokuGrid points to a valid Grid
-// MODIFIES: *sudokuGrid
-// EFFECTS: Performs basic algorithm utilized by humans to solve sudokus
-void smartSolve(Grid *sudokuGrid);
-
 #endif /* Grid_h */
