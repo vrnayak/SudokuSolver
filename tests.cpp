@@ -9,6 +9,7 @@
 #include <iostream>
 #include <string>
 #include "Grid.h"
+#include "solver.h"
 
 using namespace std;
 
