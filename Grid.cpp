@@ -101,7 +101,7 @@ void Grid::print(std::ostream &os) const {
 		for (int col = 0; col < COL_SIZE; ++col) {
 			os << at(row, col) << " ";
 		} // for...col
-        cout << endl;
+        os << endl;
     } // for...row
 } // print()
 
