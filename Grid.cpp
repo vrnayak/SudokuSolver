@@ -1,12 +1,12 @@
 //  Project Identifier: N/A
 //              Author: Vishal Nayak
 //             Project: Sudoku Solver
-//              Module: grid.cpp
+//              Module: Grid.cpp
 //         Description: Grid Class Implementation
 //
 
 #include <iostream>
-#include "sudoku.h"
+#include "Grid.h"
 
 using namespace std;
 
@@ -51,7 +51,8 @@ int Grid::getBox(int index) const {
 		return 1 + 3 * (index / 27);
 	else if (index % 9 == 6 || index % 9 == 7 || index % 9 == 8)
 		return 2 + 3 * (index / 27);
-	else return -1;
+	else
+		return -1;
 } // getBox()
 
 // EFFECTS: Returns index of cell at given row and column
@@ -75,7 +76,7 @@ bool Grid::checkIfValid(int rowCheck, int colCheck, int value) {
         
         set(rowCheck, colCheck, 0);
         return false;
-    }
+    } // if...else
     
     set(rowCheck, colCheck, 0);
     return true;
@@ -97,8 +98,9 @@ int Grid::findFirstEmptyCell() const {
 void Grid::print(std::ostream &os) const {
     
     for (int row = 0; row < ROW_SIZE; ++row) {
-        for (int col = 0; col < COL_SIZE; ++col)
-            os << at(row, col) << " ";
+		for (int col = 0; col < COL_SIZE; ++col) {
+			os << at(row, col) << " ";
+		} // for...col
         cout << endl;
     } // for...row
 } // print()
@@ -111,12 +113,16 @@ int Grid::getCount(int value, int start, std::string regionType) const {
     int count = 0;
     if (regionType == "row") {
         for (int col = 0; col < COL_SIZE; ++col) {
-            if (at(getRow(start), col) == value) count++;
+            if (at(getRow(start), col) == value)
+				count++;
         } // for...col
+		
     } else if (regionType == "col") {
         for (int row = 0; row < ROW_SIZE; ++row) {
-            if (at(row, getCol(start)) == value) count++;
+            if (at(row, getCol(start)) == value)
+				count++;
         } // for...row
+		
     } else if (regionType == "box") {
         for (int rowDiff = 0; rowDiff < 3; ++rowDiff) {
             for (int colDiff = 0; colDiff < 3; ++colDiff) {
