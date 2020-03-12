@@ -1,14 +1,29 @@
-//
-//  solver.hpp
-//  Sudoku Solver
-//
-//  Created by Vishal Nayak on 3/12/20.
-//  Copyright © 2020 Vishal Nayak. All rights reserved.
+//  Project Identifier: N/A
+//              Author: Vishal Nayak
+//             Project: Sudoku Solver
+//              Module: solver.h
+//         Description: Sudoku Solver Algorithms Declarations
 //
 
-#ifndef solver_hpp
-#define solver_hpp
+#ifndef solver_h
+#define solver_h
 
-#include <stdio.h>
+#include <iostream>
+#include "Grid.h"
 
-#endif /* solver_hpp */
+// REQUIRES: sudokuGrid points to a valid Grid
+// MODIFIES: sudokuGrid
+// EFFECTS: Performs brute force solving algorithm on sudoku grid
+void bruteForceSolve(Grid &grid);
+
+// REQUIRES: sudokuGrid points to a valid Grid
+// MODIFIES: sudokuGrid
+// EFFECTS: Performs simple process of elimination algorithm to fill in cells
+void simpleSolve(Grid &sudokuGrid);
+
+// REQUIRES: sudokuGrid points to a valid Grid
+// MODIFIES: sudokuGrid
+// EFFECTS: Performs basic algorithm utilized by humans to solve sudokus
+void smartSolve(Grid &sudokuGrid);
+
+#endif /* solver_h */
