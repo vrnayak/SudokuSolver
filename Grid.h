@@ -1,15 +1,12 @@
-//
-//  Project Name: Sudoku Solver
-//  Created By: Vishal Nayak
-//
-//  OVERVIEW: Program completes a partially filled in sudoku grid
-//
-//  Module Name: sudoku.h
-//  Module Description: Grid Class & Sudoku Function Declarations
+//  Project Identifier: N/A
+//              Author: Vishal Nayak
+//             Project: Sudoku Solver
+//              Module: Grid.h
+//         Description: Grid Class Declaration
 //
 
-#ifndef sudoku_h
-#define sudoku_h
+#ifndef Grid_h
+#define Grid_h
 
 #include <iostream>
 #include <string>
@@ -27,7 +24,7 @@ public:
     
     // REQUIRES: &is contains an open, properly formatted file
     // EFFECTS: Initializes a 9x9 grid object from given input stream
-    Grid(std::istream &is);
+	Grid(std::istream &is);
     
     // REQUIRES: 0 <= row < 9 && 0 <= col < 9
     // EFFECTS: Returns the value at given row & column
@@ -65,15 +62,15 @@ public:
     int findFirstEmptyCell() const;
     
     // EFFECTS: Prints sudoku grid to &os
-    void print(std::ostream &os) const;
+	void print(std::ostream &os) const;
     
 private:
     
     static const int GRID_SIZE = 81;
     static const int ROW_SIZE = 9;
     static const int COL_SIZE = 9;
-    int grid[ROW_SIZE][COL_SIZE];
-    
+	int grid[ROW_SIZE][COL_SIZE];
+	
     // EFFECTS: Returns number of occurrences of value in given region,
     //          which is specfied by areaString ("row", "col", "box")
     //          start refers to first cell in specified region
@@ -97,4 +94,4 @@ void simpleSolve(Grid *sudokuGrid);
 // EFFECTS: Performs basic algorithm utilized by humans to solve sudokus
 void smartSolve(Grid *sudokuGrid);
 
-#endif /* sudoku_h */
+#endif /* Grid_h */
