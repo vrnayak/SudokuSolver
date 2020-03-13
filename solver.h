@@ -19,11 +19,11 @@ void bruteForceSolve(Grid &grid);
 // REQUIRES: sudokuGrid points to a valid Grid
 // MODIFIES: sudokuGrid
 // EFFECTS: Performs simple process of elimination algorithm to fill in cells
-void simpleSolve(Grid &sudokuGrid);
+void simpleSolve(Grid &grid);
 
 // REQUIRES: sudokuGrid points to a valid Grid
 // MODIFIES: sudokuGrid
 // EFFECTS: Performs basic algorithm utilized by humans to solve sudokus
-void smartSolve(Grid &sudokuGrid);
+void smartSolve(Grid &grid);
 
 #endif /* solver_h */
