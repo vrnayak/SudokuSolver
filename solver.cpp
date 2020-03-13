@@ -15,24 +15,25 @@ using namespace std;
 // EFFECTS: Performs brute force solving algorithm on sudoku grid
 void bruteForceSolve(Grid &grid) {
 	
-	int cell = grid.findFirstEmptyCell();
-	if (cell == -1) return;
+	if (grid.isFilled()) return;
 	
+	int cell = grid.findFirstEmptyCell();
 	for (int i = 1; i <= 9; ++i) {
 		
 		if (grid.checkIfValid(grid.getRow(cell), grid.getCol(cell), i)) {
 			grid.set(grid.getRow(cell), grid.getCol(cell), i);
 			bruteForceSolve(grid);
-			if (grid.findFirstEmptyCell() == -1) break;
+			if (grid.isFilled()) break;
 		} // if...else
 	} // for...i
-	if (grid.findFirstEmptyCell() != -1)
+	if (!grid.isFilled())
 		grid.set(grid.getRow(cell), grid.getCol(cell), 0);
 } // bruteForceSolve()
 
 // EFFECTS: Performs simple process of elimination algorithm to fill in cells
 void simpleSolve(Grid &grid) {
 	
+	if (grid.isFilled()) return;
 	for (int index = 0; index < 81; ++index) {
 		
 		vector<int> nums(9);
@@ -60,6 +61,6 @@ void simpleSolve(Grid &grid) {
 // EFFECTS: Performs basic algorithm utilized by humans to solve sudokus
 void smartSolve(Grid &grid) {
 	
+	if (grid.isFilled()) return;
+	
 } // smartSolve()
-
-
