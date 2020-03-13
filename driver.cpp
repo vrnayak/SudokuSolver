@@ -20,15 +20,15 @@ bool fileComp(string fileName1, string fileName2);
 
 int main() {
 	
-	ifstream gridIn(PATHNAME + "grid1.in");
-	ofstream gridOut(PATHNAME + "grid1.out");
+	ifstream gridIn(PATHNAME + "grid2.in");
+	ofstream gridOut(PATHNAME + "grid2.out");
 	Grid sudokuGrid(gridIn);
 	
 	bruteForceSolve(sudokuGrid);
 	sudokuGrid.print(gridOut);
-	if (fileComp(PATHNAME + "grid1.out",
-				 PATHNAME + "grid1.correct"))
-		cout << "Success!" << endl;
+	// if (fileComp(PATHNAME + "grid1.out",
+	// 			 PATHNAME + "grid1.correct"))
+	// 	cout << "Success!" << endl;
 	
 	return 0;
 	
