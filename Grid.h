@@ -60,6 +60,12 @@ public:
     
     // EFFECTS: Returns index of first empty cell in sudoku grid
     int findFirstEmptyCell() const;
+	
+	// EFFECTS: Returns the number of empty cells in the grid
+	int numEmptyCells() const;
+	
+	// EFFECTS: Returns true if the grid is filled, false if not
+	bool isFilled() const;
     
     // EFFECTS: Prints sudoku grid to &os
 	void print(std::ostream &os) const;
