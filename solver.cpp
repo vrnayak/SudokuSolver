@@ -21,6 +21,7 @@ void bruteForceSolve(Grid &grid) {
 	for (int i = 1; i <= 9; ++i) {
 		
 		if (grid.checkIfValid(grid.getRow(cell), grid.getCol(cell), i)) {
+			
 			grid.set(grid.getRow(cell), grid.getCol(cell), i);
 			bruteForceSolve(grid);
 			if (grid.isFilled()) break;
@@ -36,23 +37,18 @@ void simpleSolve(Grid &grid) {
 	if (grid.isFilled()) return;
 	for (int index = 0; index < 81; ++index) {
 		
-		vector<int> nums(9);
-		iota(nums.begin(), nums.end(), 1);
-		
 		if (grid.at(grid.getRow(index), grid.getCol(index)) == 0) {
 			
+			vector<int> validNums;
+			validNums.reserve(9);
+			
 			for (int i = 1; i <= 9; ++i) {
-				if (!grid.checkIfValid(grid.getRow(index), grid.getCol(index), i))
-					nums[i] = 0;
+				if (grid.checkIfValid(grid.getRow(index), grid.getCol(index), i))
+					validNums.push_back(i);
 			} // for...i
 			
-			if (count(nums.begin(), nums.end(), 0) == 8) {
-				for (int j = 0; j < 9; ++j) {
-					if (nums[j] != 0) {
-						grid.set(grid.getRow(index), grid.getCol(index), nums[j]);
-						break;
-					} // if...else
-				} // for...j
+			if (validNums.size() == 1) {
+				grid.set(grid.getRow(index), grid.getCol(index), validNums[0]);
 			} // if...else
 		} // if...else
 	} // for...index
@@ -62,5 +58,7 @@ void simpleSolve(Grid &grid) {
 void smartSolve(Grid &grid) {
 	
 	if (grid.isFilled()) return;
+	
+	
 	
 } // smartSolve()
