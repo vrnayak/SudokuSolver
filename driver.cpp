@@ -18,12 +18,13 @@ using namespace std;
 const string IN = ".in";
 const string OUT = ".out";
 const string CORRECT = ".correct";
-const string PATHNAME = "/Users/vrnayak/Desktop/Coding/Personal/Sudoku Solver/Sudoku Grids/grid";
-
+const string PATHNAME = "/Users/vrnayak/Desktop/Coding/Personal"
+						"/Sudoku Solver/Sudoku Grids/grid";
 const int NUM_GRIDS = 2;
 
 void printInfo();
 bool fileComp(string fileName1, string fileName2);
+void solve(Grid &sudokuGrid, string fileOut, string fileCorrect);
 bool ASSERT_TRUE(bool statement) {
 	
 	if (statement) return true;
@@ -58,7 +59,7 @@ int main() {
 		ASSERT_TRUE(fileComp(fileOut, fileCorrect));
 		cout << "Time taken to solve: " << time << "s\n";
 		cout << endl;
-	}
+	} // for...i
 	return 0;
 } // main()
 
@@ -67,7 +68,7 @@ void printInfo() {
 	cout << "Sudoku Solver Program\n"
 		 << "# of Grids to Solve: " << NUM_GRIDS
 		 << endl << endl;
-}
+} // printInfo()
 
 bool fileComp(string fileName1, string fileName2) {
 	
@@ -86,4 +87,4 @@ bool fileComp(string fileName1, string fileName2) {
 			return false;
 	} // while
 	return counter == 81;
-}
+} // fileComp()
