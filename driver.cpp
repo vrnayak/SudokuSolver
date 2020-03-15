@@ -5,6 +5,7 @@
 //         Description: Reads in Sudoku Grid
 //
 
+#include <cmath>
 #include <ctime>
 #include <fstream>
 #include <getopt.h>
@@ -145,7 +146,7 @@ void solve(Grid &sudokuGrid, string fileOut, string fileCorrect) {
 void solveInfo(Grid &sudokuGrid, string fileOut, string fileCorrect) {
 	
 	clock_t start;
-	double smartTime = 0.0, simpleTime = 0.0, forceTime = 0.0;
+	float smartTime = 0.0, simpleTime = 0.0, forceTime = 0.0;
 	int smartCells = 0, simpleCells = 0, forceCells = 0;
 	int emptyCells = 81;
 	
@@ -178,11 +179,11 @@ void solveInfo(Grid &sudokuGrid, string fileOut, string fileCorrect) {
 	ASSERT_TRUE(fileComp(fileOut, fileCorrect));
 	
 	cout << "SmartSolve:\t Filled " << smartCells << " cells in "
-		 << smartTime << " seconds\n"
+		 << smartTime * pow(10, 6) << " microseconds\n"
 		 << "SimpleSolve: Filled " << simpleCells << " cells in "
-		 << simpleTime << " seconds\n"
+		 << simpleTime * pow(10, 6) << " microseconds\n"
 		 << "Brute Force: Filled " << forceCells << " cells in "
-		 << forceTime << " seconds\n"
-		 << "Total Time Taken: " << smartTime + simpleTime + forceTime
-		 << "s\n" << endl;
+		 << forceTime * pow(10, 6)<< " microseconds\n"
+		 << "Total Time Taken: " << (smartTime + simpleTime + forceTime) * pow(10, 6)
+		 << " microseconds\n" << endl;
 } // solve()
