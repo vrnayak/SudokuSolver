@@ -67,6 +67,7 @@ public:
 	// EFFECTS: Returns true if the grid is filled, false if not
 	bool isFilled() const;
     
+	// REQUIRES: os is an open output stream
     // EFFECTS: Prints sudoku grid to &os
 	void print(std::ostream &os) const;
     
