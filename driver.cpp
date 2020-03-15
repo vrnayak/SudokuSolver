@@ -7,6 +7,7 @@
 
 #include <ctime>
 #include <fstream>
+#include <getopt.h>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -23,13 +24,17 @@ const string PATHNAME = "/Users/vrnayak/Desktop/Coding/Personal"
 const int NUM_GRIDS = 2;
 
 void printInfo();
+void printHelp();
 bool ASSERT_TRUE(bool statement);
+bool getOpts(int argc, char *argv[]);
 bool fileComp(string fileName1, string fileName2);
+void solve(Grid &sudokuGrid, string fileOut, string fileCorrect);
 void solveInfo(Grid &sudokuGrid, string fileOut, string fileCorrect);
 
-int main() {
+int main(int argc, char *argv[]) {
 	
-	printInfo();
+	bool info = getOpts(argc, argv);
+	if (info) printInfo();
 	for (int i = 1; i <= NUM_GRIDS; ++i) {
 		
 		string comment;
@@ -38,11 +43,15 @@ int main() {
 		string fileCorrect = PATHNAME + to_string(i) + CORRECT;
 		
 		ifstream inputStream(fileIn);
-		getline(inputStream, comment);
+		getline(inputStream, comment); // First line is a comment
 		Grid sudokuGrid(inputStream);
 		
-		cout << "Sudoku Grid #" << i << "\n";
-		solveInfo(sudokuGrid, fileOut, fileCorrect);
+		if (info) {
+			cout << "Sudoku Grid #" << i << "\n";
+			solveInfo(sudokuGrid, fileOut, fileCorrect);
+		} else {
+			solve(sudokuGrid, fileOut, fileCorrect);
+		} // if..else
 	} // for...i
 	return 0;
 } // main()
@@ -53,12 +62,50 @@ bool ASSERT_TRUE(bool statement) {
 	else exit(3);
 } // ASSERT_TRUE()
 
+bool getOpts(int argc, char *argv[]) {
+	
+	opterr = true;
+	bool info = false;
+    int choice, optionIndex = 0;
+    option longOpts[] = {{ "help", no_argument, nullptr, 'h' },
+                         { "info", no_argument, nullptr, 'i' }};
+    
+    while ((choice = getopt_long(argc, argv, "hi", longOpts,
+                                 &optionIndex)) != -1) {
+        switch (choice) {
+            case 'h':
+				printHelp();
+                break;
+            
+            case 'i':
+                info = true;
+                break;
+                
+            default:
+                cerr << "Invalid command line flag." << endl;
+                exit(1);
+        } // switch...choice
+    } // while...choice
+	return info;
+} // getOpts()
+
 void printInfo() {
 	
 	cout << "Sudoku Solver Program\n"
 		 << "# of Grids to Solve: " << NUM_GRIDS
 		 << endl << endl;
 } // printInfo()
+
+void printHelp() {
+	
+	cout << "How To Use Sudoku Solver Program:\n"
+		 << "./driver.exe [--help] [--info]\n"
+		 << "--help flag provides informational message about use info\n"
+		 << "--info flag is optional, it provides more details of how\n"
+		 << "the sudoku grid was solved (e.g. times, methods)."
+		 << endl;
+	exit(0);
+}
 
 bool fileComp(string fileName1, string fileName2) {
 	
@@ -78,6 +125,22 @@ bool fileComp(string fileName1, string fileName2) {
 	} // while
 	return counter == 81;
 } // fileComp()
+
+void solve(Grid &sudokuGrid, string fileOut, string fileCorrect) {
+	
+	int emptyCells = 81;
+	while (emptyCells > sudokuGrid.numEmptyCells()) {
+		
+		emptyCells = sudokuGrid.numEmptyCells();
+		smartSolve(sudokuGrid);
+		simpleSolve(sudokuGrid);
+	} // while
+	
+	bruteForceSolve(sudokuGrid);
+	ofstream os(fileOut);
+	sudokuGrid.print(os);
+	ASSERT_TRUE(fileComp(fileOut, fileCorrect));
+} // solve()
 
 void solveInfo(Grid &sudokuGrid, string fileOut, string fileCorrect) {
 	
