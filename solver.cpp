@@ -59,6 +59,38 @@ void smartSolve(Grid &grid) {
 	
 	if (grid.isFilled()) return;
 	
-	
-	
+	for (int index = 0; index < 81; ++index) {
+		
+		if (grid.at(grid.getRow(index), grid.getCol(index)) == 0) {
+			
+			vector<int> validNums(9), unavailable, possible;
+			iota(validNums.begin(), validNums.end(), 1);
+			unavailable.reserve(9);
+			
+			for (int col = 0; col < 9; ++col) {
+				if (grid.at(grid.getRow(index), col) != 0)
+					unavailable.push_back(grid.at(grid.getRow(index), col));
+			} // for...col
+			
+			for (int row = 0; row < 9; ++row) {
+				if (grid.at(row, grid.getCol(index)) != 0)
+					unavailable.push_back(grid.at(row, grid.getCol(index)));
+			} // for...row
+			
+			for (int rowDiff = 0; rowDiff < 3; ++rowDiff) {
+				for (int colDiff = 0; colDiff < 3; ++colDiff) {
+					int val = grid.at(rowDiff + 3 * (grid.getBox(index) / 3),
+									  colDiff + 3 * (grid.getBox(index) % 3));
+					if (val != 0)
+						unavailable.push_back(val);
+				} // for...colDiff
+			} // for...rowDiff
+			
+			if (unavailable.size() == 8) {
+				
+				int val = 45 - accumulate(unavailable.begin(), unavailable.end(), 0);
+				grid.set(grid.getRow(index), grid.getCol(index), val);
+			} // if...else
+		} // if...else
+	} // for...index
 } // smartSolve()
