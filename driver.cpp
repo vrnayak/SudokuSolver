@@ -92,12 +92,13 @@ void solve(Grid &sudokuGrid, string fileOut, string fileCorrect) {
 		smartSolve(sudokuGrid);
 		smartTime = (std::clock() - start) / (double) CLOCKS_PER_SEC;
 		smartCells += emptyCells - sudokuGrid.numEmptyCells();
-		
+		/*
 		emptyCells = sudokuGrid.numEmptyCells();
 		start = std::clock();
 		simpleSolve(sudokuGrid);
 		simpleTime = (std::clock() - start) / (double) CLOCKS_PER_SEC;
 		simpleCells += emptyCells - sudokuGrid.numEmptyCells();
+		 */
 	} // while
 	
 	start = std::clock();
