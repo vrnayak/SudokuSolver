@@ -63,8 +63,7 @@ void smartSolve(Grid &grid) {
 		
 		if (grid.at(grid.getRow(index), grid.getCol(index)) == 0) {
 			
-			vector<int> validNums(9), unavailable, possible;
-			iota(validNums.begin(), validNums.end(), 1);
+			vector<int> unavailable;
 			unavailable.reserve(9);
 			
 			for (int col = 0; col < 9; ++col) {
@@ -86,9 +85,13 @@ void smartSolve(Grid &grid) {
 				} // for...colDiff
 			} // for...rowDiff
 			
-			if (unavailable.size() == 8) {
+			sort(unavailable.begin(), unavailable.end());
+			auto endIter = unique(unavailable.begin(), unavailable.end());
+			
+			if (endIter == unavailable.begin() + 8) {
 				
-				int val = 45 - accumulate(unavailable.begin(), unavailable.end(), 0);
+				int val = 45 - accumulate(unavailable.begin(),
+										  endIter, 0);
 				grid.set(grid.getRow(index), grid.getCol(index), val);
 			} // if...else
 		} // if...else
