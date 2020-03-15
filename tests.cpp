@@ -13,7 +13,8 @@
 
 using namespace std;
 
-const string PATHNAME = "/Users/vrnayak/Desktop/Coding/Personal/Sudoku Solver/Sudoku Grids/";
+const string PATHNAME = "/Users/vrnayak/Desktop/Coding/Personal"
+						"/Sudoku Solver/Sudoku Grids/";
 
 // Assert Functions
 bool ASSERT_TRUE(bool statement) {
