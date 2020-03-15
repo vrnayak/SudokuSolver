@@ -1,4 +1,4 @@
-//  Project Identifier: N/A
+//  Project Identifier: 490395975692179385863
 //              Author: Vishal Nayak
 //             Project: Sudoku Solver
 //              Module: driver.cpp
@@ -23,31 +23,35 @@ const string PATHNAME = "/Users/vrnayak/Desktop/Coding/Personal"
 const int NUM_GRIDS = 2;
 
 void printInfo();
+bool ASSERT_TRUE(bool statement);
 bool fileComp(string fileName1, string fileName2);
-void solve(Grid &sudokuGrid, string fileOut, string fileCorrect);
-bool ASSERT_TRUE(bool statement) {
-	
-	if (statement) return true;
-	else exit(3);
-}
+void solveInfo(Grid &sudokuGrid, string fileOut, string fileCorrect);
 
 int main() {
 	
 	printInfo();
 	for (int i = 1; i <= NUM_GRIDS; ++i) {
 		
+		string comment;
 		string fileIn = PATHNAME + to_string(i) + IN;
 		string fileOut = PATHNAME + to_string(i) + OUT;
 		string fileCorrect = PATHNAME + to_string(i) + CORRECT;
 		
 		ifstream inputStream(fileIn);
+		getline(inputStream, comment);
 		Grid sudokuGrid(inputStream);
 		
 		cout << "Sudoku Grid #" << i << "\n";
-		solve(sudokuGrid, fileOut, fileCorrect);
+		solveInfo(sudokuGrid, fileOut, fileCorrect);
 	} // for...i
 	return 0;
 } // main()
+
+bool ASSERT_TRUE(bool statement) {
+	
+	if (statement) return true;
+	else exit(3);
+} // ASSERT_TRUE()
 
 void printInfo() {
 	
@@ -75,7 +79,7 @@ bool fileComp(string fileName1, string fileName2) {
 	return counter == 81;
 } // fileComp()
 
-void solve(Grid &sudokuGrid, string fileOut, string fileCorrect) {
+void solveInfo(Grid &sudokuGrid, string fileOut, string fileCorrect) {
 	
 	clock_t start;
 	double smartTime = 0.0, simpleTime = 0.0, forceTime = 0.0;
@@ -92,13 +96,13 @@ void solve(Grid &sudokuGrid, string fileOut, string fileCorrect) {
 		smartSolve(sudokuGrid);
 		smartTime = (std::clock() - start) / (double) CLOCKS_PER_SEC;
 		smartCells += emptyCells - sudokuGrid.numEmptyCells();
-		/*
+		
 		emptyCells = sudokuGrid.numEmptyCells();
 		start = std::clock();
 		simpleSolve(sudokuGrid);
 		simpleTime = (std::clock() - start) / (double) CLOCKS_PER_SEC;
 		simpleCells += emptyCells - sudokuGrid.numEmptyCells();
-		 */
+		
 	} // while
 	
 	start = std::clock();

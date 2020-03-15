@@ -1,4 +1,4 @@
-//  Project Identifier: N/A
+//  Project Identifier: 490395975692179385863
 //              Author: Vishal Nayak
 //             Project: Sudoku Solver
 //              Module: solver.h
@@ -18,12 +18,12 @@ void bruteForceSolve(Grid &grid);
 
 // REQUIRES: sudokuGrid points to a valid Grid
 // MODIFIES: sudokuGrid
-// EFFECTS: Performs simple process of elimination algorithm to fill in cells
+// EFFECTS: Performs process of elimination algorithm to fill in cells
 void simpleSolve(Grid &grid);
 
 // REQUIRES: sudokuGrid points to a valid Grid
 // MODIFIES: sudokuGrid
-// EFFECTS: Performs basic algorithm utilized by humans to solve sudokus
+// EFFECTS: Performs algorithm utilized by humans to solve sudokus
 void smartSolve(Grid &grid);
 
 #endif /* solver_h */
