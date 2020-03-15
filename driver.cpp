@@ -41,24 +41,10 @@ int main() {
 		string fileCorrect = PATHNAME + to_string(i) + CORRECT;
 		
 		ifstream inputStream(fileIn);
-		ofstream outputStream(fileOut);
-		
 		Grid sudokuGrid(inputStream);
 		
-		cout << "Sudoku Grid #" << i << "\n"
-			 << "# of Empty Cells: "
-			 << sudokuGrid.numEmptyCells() << "\n";
-		
-		clock_t start;
-		double time;
-		
-		start = std::clock();
-		bruteForceSolve(sudokuGrid);
-		time = (std::clock() - start) / (double) CLOCKS_PER_SEC;
-		sudokuGrid.print(outputStream);
-		ASSERT_TRUE(fileComp(fileOut, fileCorrect));
-		cout << "Time taken to solve: " << time << "s\n";
-		cout << endl;
+		cout << "Sudoku Grid #" << i << "\n";
+		solve(sudokuGrid, fileOut, fileCorrect);
 	} // for...i
 	return 0;
 } // main()
@@ -88,3 +74,47 @@ bool fileComp(string fileName1, string fileName2) {
 	} // while
 	return counter == 81;
 } // fileComp()
+
+void solve(Grid &sudokuGrid, string fileOut, string fileCorrect) {
+	
+	clock_t start;
+	double smartTime = 0.0, simpleTime = 0.0, forceTime = 0.0;
+	int smartCells = 0, simpleCells = 0, forceCells = 0;
+	int emptyCells = 81;
+	
+	cout << "# of Empty Cells: "
+		 << sudokuGrid.numEmptyCells() << "\n";
+	
+	while (emptyCells > sudokuGrid.numEmptyCells()) {
+		
+		emptyCells = sudokuGrid.numEmptyCells();
+		start = std::clock();
+		smartSolve(sudokuGrid);
+		smartTime = (std::clock() - start) / (double) CLOCKS_PER_SEC;
+		smartCells += emptyCells - sudokuGrid.numEmptyCells();
+		
+		emptyCells = sudokuGrid.numEmptyCells();
+		start = std::clock();
+		simpleSolve(sudokuGrid);
+		simpleTime = (std::clock() - start) / (double) CLOCKS_PER_SEC;
+		simpleCells += emptyCells - sudokuGrid.numEmptyCells();
+	} // while
+	
+	start = std::clock();
+	bruteForceSolve(sudokuGrid);
+	forceTime = (std::clock() - start) / (double) CLOCKS_PER_SEC;
+	forceCells = emptyCells;
+	
+	ofstream os(fileOut);
+	sudokuGrid.print(os);
+	ASSERT_TRUE(fileComp(fileOut, fileCorrect));
+	
+	cout << "SmartSolve:\t Filled " << smartCells << " cells in "
+		 << smartTime << " seconds\n"
+		 << "SimpleSolve: Filled " << simpleCells << " cells in "
+		 << simpleTime << " seconds\n"
+		 << "Brute Force: Filled " << forceCells << " cells in "
+		 << forceTime << " seconds\n"
+		 << "Total Time Taken: " << smartTime + simpleTime + forceTime
+		 << "s\n" << endl;
+} // solve()
