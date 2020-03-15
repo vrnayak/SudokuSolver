@@ -6,11 +6,17 @@
 //
 
 #include <algorithm>
+#include <cmath>
 #include <iostream>
 #include <numeric>
 #include "solver.h"
 
 using namespace std;
+
+static const int NUMS = 9;
+static const int NUM_ROWS = 9;
+static const int NUM_COLS = 9;
+static const int GRID_SIZE = NUM_ROWS * NUM_COLS;
 
 // EFFECTS: Performs brute force solving algorithm on sudoku grid
 void bruteForceSolve(Grid &grid) {
@@ -18,7 +24,7 @@ void bruteForceSolve(Grid &grid) {
 	if (grid.isFilled()) return;
 	
 	int cell = grid.findFirstEmptyCell();
-	for (int i = 1; i <= 9; ++i) {
+	for (int i = 1; i <= NUMS; ++i) {
 		
 		if (grid.checkIfValid(grid.getRow(cell), grid.getCol(cell), i)) {
 			
@@ -35,14 +41,14 @@ void bruteForceSolve(Grid &grid) {
 void simpleSolve(Grid &grid) {
 	
 	if (grid.isFilled()) return;
-	for (int index = 0; index < 81; ++index) {
+	for (int index = 0; index < GRID_SIZE; ++index) {
 		
 		if (grid.at(grid.getRow(index), grid.getCol(index)) == 0) {
 			
 			vector<int> validNums;
-			validNums.reserve(9);
+			validNums.reserve(NUMS);
 			
-			for (int i = 1; i <= 9; ++i) {
+			for (int i = 1; i <= NUMS; ++i) {
 				if (grid.checkIfValid(grid.getRow(index), grid.getCol(index), i))
 					validNums.push_back(i);
 			} // for...i
@@ -59,25 +65,25 @@ void smartSolve(Grid &grid) {
 	
 	if (grid.isFilled()) return;
 	
-	for (int index = 0; index < 81; ++index) {
+	for (int index = 0; index < GRID_SIZE; ++index) {
 		
 		if (grid.at(grid.getRow(index), grid.getCol(index)) == 0) {
 			
 			vector<int> unavailable;
-			unavailable.reserve(9);
+			unavailable.reserve(3 * NUMS); // row, col, and box
 			
-			for (int col = 0; col < 9; ++col) {
+			for (int col = 0; col < NUM_COLS; ++col) {
 				if (grid.at(grid.getRow(index), col) != 0)
 					unavailable.push_back(grid.at(grid.getRow(index), col));
 			} // for...col
 			
-			for (int row = 0; row < 9; ++row) {
+			for (int row = 0; row < NUM_ROWS; ++row) {
 				if (grid.at(row, grid.getCol(index)) != 0)
 					unavailable.push_back(grid.at(row, grid.getCol(index)));
 			} // for...row
 			
-			for (int rowDiff = 0; rowDiff < 3; ++rowDiff) {
-				for (int colDiff = 0; colDiff < 3; ++colDiff) {
+			for (int rowDiff = 0; rowDiff < sqrt(NUM_ROWS); ++rowDiff) {
+				for (int colDiff = 0; colDiff < sqrt(NUM_COLS); ++colDiff) {
 					int val = grid.at(rowDiff + 3 * (grid.getBox(index) / 3),
 									  colDiff + 3 * (grid.getBox(index) % 3));
 					if (val != 0)
@@ -88,7 +94,7 @@ void smartSolve(Grid &grid) {
 			sort(unavailable.begin(), unavailable.end());
 			auto endIter = unique(unavailable.begin(), unavailable.end());
 			
-			if (endIter == unavailable.begin() + 8) {
+			if (endIter == unavailable.begin() + NUMS - 1) {
 				
 				int val = 45 - accumulate(unavailable.begin(),
 										  endIter, 0);
