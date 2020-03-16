@@ -22,7 +22,7 @@ const string OUT = ".out";
 const string CORRECT = ".correct";
 const string PATHNAME = "/Users/vrnayak/Desktop/Coding/Personal"
 						"/Sudoku Solver/Sudoku Grids/grid";
-const int NUM_GRIDS = 2;
+const int NUM_GRIDS = 4;
 
 void printInfo();
 void printHelp();
@@ -146,7 +146,7 @@ void solve(Grid &sudokuGrid, string fileOut, string fileCorrect) {
 void solveInfo(Grid &sudokuGrid, string fileOut, string fileCorrect) {
 	
 	clock_t start;
-	float smartTime = 0.0, simpleTime = 0.0, forceTime = 0.0;
+	double smartTime = 0.0, simpleTime = 0.0, forceTime = 0.0;
 	int smartCells = 0, simpleCells = 0, forceCells = 0;
 	int emptyCells = 81;
 	
@@ -177,6 +177,7 @@ void solveInfo(Grid &sudokuGrid, string fileOut, string fileCorrect) {
 	ofstream os(fileOut);
 	sudokuGrid.print(os);
 	ASSERT_TRUE(fileComp(fileOut, fileCorrect));
+	double totalTime = smartTime + simpleTime + forceTime;
 	
 	cout << "SmartSolve:\t Filled " << smartCells << " cells in "
 		 << smartTime * pow(10, 6) << " microseconds\n"
@@ -184,6 +185,6 @@ void solveInfo(Grid &sudokuGrid, string fileOut, string fileCorrect) {
 		 << simpleTime * pow(10, 6) << " microseconds\n"
 		 << "Brute Force: Filled " << forceCells << " cells in "
 		 << forceTime * pow(10, 6)<< " microseconds\n"
-		 << "Total Time Taken: " << (smartTime + simpleTime + forceTime) * pow(10, 6)
+		 << "Total Time Taken: " << totalTime * pow(10, 6)
 		 << " microseconds\n" << endl;
 } // solve()
