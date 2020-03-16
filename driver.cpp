@@ -27,18 +27,34 @@ const int NUM_GRIDS = 4;
 void printInfo();
 void printHelp();
 bool ASSERT_TRUE(bool statement);
-bool getOpts(int argc, char *argv[]);
 bool fileComp(string fileName1, string fileName2);
+bool getOpts(int argc, char *argv[], string &fileIn);
 void solve(Grid &sudokuGrid, string fileOut, string fileCorrect);
 void solveInfo(Grid &sudokuGrid, string fileOut, string fileCorrect);
 
 int main(int argc, char *argv[]) {
 	
-	bool info = getOpts(argc, argv);
+	string userFile = " ", comment;
+	bool info = getOpts(argc, argv, userFile);
+	
+	if (userFile.size() > 1) { // if userFile supplied
+		
+		ifstream input(userFile);
+		getline(input, comment);
+		Grid sudoku(input);
+		if (info) {
+			cout << "User Sudoku Grid:\n";
+			solveInfo(sudoku, "", "");
+		} else {
+			solve(sudoku, "", "");
+		}
+		return 0;
+	} // if...else
+	
 	if (info) printInfo();
 	for (int i = 1; i <= NUM_GRIDS; ++i) {
 		
-		string comment;
+		
 		string fileIn = PATHNAME + to_string(i) + IN;
 		string fileOut = PATHNAME + to_string(i) + OUT;
 		string fileCorrect = PATHNAME + to_string(i) + CORRECT;
@@ -63,15 +79,16 @@ bool ASSERT_TRUE(bool statement) {
 	else exit(3);
 } // ASSERT_TRUE()
 
-bool getOpts(int argc, char *argv[]) {
+bool getOpts(int argc, char *argv[], string &fileIn) {
 	
 	opterr = true;
 	bool info = false;
     int choice, optionIndex = 0;
-    option longOpts[] = {{ "help", no_argument, nullptr, 'h' },
-                         { "info", no_argument, nullptr, 'i' }};
+    option longOpts[] = {{ "help", no_argument, 	  nullptr, 'h' },
+                         { "info", no_argument, 	  nullptr, 'i' },
+						 { "file", required_argument, nullptr, 'f' }};
     
-    while ((choice = getopt_long(argc, argv, "hi", longOpts,
+    while ((choice = getopt_long(argc, argv, "hif:", longOpts,
                                  &optionIndex)) != -1) {
         switch (choice) {
             case 'h':
@@ -81,6 +98,10 @@ bool getOpts(int argc, char *argv[]) {
             case 'i':
                 info = true;
                 break;
+			
+			case 'f':
+				fileIn.assign(optarg);
+				break;
                 
             default:
                 cerr << "Invalid command line flag." << endl;
@@ -100,10 +121,13 @@ void printInfo() {
 void printHelp() {
 	
 	cout << "How To Use Sudoku Solver Program:\n"
-		 << "./driver.exe [--help] [--info]\n"
+		 << "./driver.exe [--help] [--info] [--file <filename>]\n"
 		 << "--help flag provides informational message about use info\n"
-		 << "--info flag is optional, it provides more details of how\n"
-		 << "the sudoku grid was solved (e.g. times, methods)."
+		 << "--info flag is optional. It provides more details of how "
+		 << "the pre-existing sudoku grids were solved (e.g. times, methods).\n"
+		 << "--file flag is optional, must include a filename argument that "
+		 << "specifies the grid to be solved with a single comment line "
+		 << "at the beginning of the file. Program prints output to stdout."
 		 << endl;
 	exit(0);
 }
@@ -138,9 +162,14 @@ void solve(Grid &sudokuGrid, string fileOut, string fileCorrect) {
 	} // while
 	
 	bruteForceSolve(sudokuGrid);
-	ofstream os(fileOut);
-	sudokuGrid.print(os);
-	ASSERT_TRUE(fileComp(fileOut, fileCorrect));
+	
+	string space = "";
+	if (fileOut == space) sudokuGrid.print(cout);
+	else {
+		ofstream os(fileOut);
+		sudokuGrid.print(os);
+		ASSERT_TRUE(fileComp(fileOut, fileCorrect));
+	} // if...else
 } // solve()
 
 void solveInfo(Grid &sudokuGrid, string fileOut, string fileCorrect) {
@@ -174,9 +203,15 @@ void solveInfo(Grid &sudokuGrid, string fileOut, string fileCorrect) {
 	forceTime = (std::clock() - start) / (double) CLOCKS_PER_SEC;
 	forceCells = emptyCells;
 	
-	ofstream os(fileOut);
-	sudokuGrid.print(os);
-	ASSERT_TRUE(fileComp(fileOut, fileCorrect));
+	string space = "";
+	if (fileOut == space) sudokuGrid.print(cout);
+	else {
+		ofstream os(fileOut);
+		sudokuGrid.print(os);
+		ASSERT_TRUE(fileComp(fileOut, fileCorrect));
+	}
+	
+
 	double totalTime = smartTime + simpleTime + forceTime;
 	
 	cout << "SmartSolve:\t Filled " << smartCells << " cells in "
