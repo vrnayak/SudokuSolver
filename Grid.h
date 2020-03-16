@@ -73,15 +73,15 @@ public:
     
 private:
     
-    static const int GRID_SIZE = 81;
-    static const int ROW_SIZE = 9;
-    static const int COL_SIZE = 9;
-	int grid[ROW_SIZE][COL_SIZE];
+    static const int NUM_ROWS = 9;
+    static const int NUM_COLS = 9;
+	static const int GRID_SIZE = NUM_ROWS * NUM_COLS;
+	int grid[NUM_ROWS][NUM_COLS];
 	
     // EFFECTS: Returns number of occurrences of value in given region,
     //          which is specfied by areaString ("row", "col", "box")
     //          start refers to first cell in specified region
-    int getCount(int value, int start, std::string regionType) const;
+	int getCount(int value, int start, std::string regionType) const;
 };
 
 #endif /* Grid_h */
