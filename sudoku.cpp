@@ -54,7 +54,6 @@ int main(int argc, char *argv[]) {
 	if (info) printInfo();
 	for (int i = 1; i <= NUM_GRIDS; ++i) {
 		
-		
 		string fileIn = PATHNAME + to_string(i) + IN;
 		string fileOut = PATHNAME + to_string(i) + OUT;
 		string fileCorrect = PATHNAME + to_string(i) + CORRECT;
@@ -121,7 +120,7 @@ void printInfo() {
 void printHelp() {
 	
 	cout << "How To Use Sudoku Solver Program:\n"
-		 << "./driver.exe [--help] [--info] [--file <filename>]\n"
+		 << "./sudoku.exe [--help] [--info] [--file <filename>]\n"
 		 << "--help flag provides informational message about use info\n"
 		 << "--info flag is optional. It provides more details of how "
 		 << "the pre-existing sudoku grids were solved (e.g. times, methods).\n"
