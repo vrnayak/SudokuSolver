@@ -21,16 +21,16 @@
 # TODO (begin) #
 #######################
 # Change IDENTIFIER to match the project identifier given in the project spec.
-IDENTIFIER  = 0E04A31E0D60C01986ACB20081C9D8722A1899B6
+IDENTIFIER  = 490395975692179385863
 
 # Change EXECUTABLE to match the command name given in the project spec.
-EXECUTABLE  = market
+EXECUTABLE  = sudoku
 
 # The following line looks for a project's main() in files named project*.cpp,
 # executable.cpp (substituted from EXECUTABLE above), or main.cpp
-# PROJECTFILE = $(or $(wildcard project*.cpp $(EXECUTABLE).cpp), main.cpp)
+PROJECTFILE = $(or $(wildcard project*.cpp $(EXECUTABLE).cpp), main.cpp)
 # If main() is in another file delete line above, edit and uncomment below
-PROJECTFILE = stocks.cpp
+# PROJECTFILE = sudoku.cpp
 #######################
 # TODO (end) #
 #######################
@@ -59,10 +59,6 @@ SOURCES     = $(wildcard *.cpp)
 SOURCES     := $(filter-out $(TESTSOURCES), $(SOURCES))
 # list of objects used in project
 OBJECTS     = $(SOURCES:%.cpp=%.o)
-
-# name of the tarball created for submission
-PARTIAL_SUBMITFILE = partialsubmit.tar.gz
-FULL_SUBMITFILE = fullsubmit.tar.gz
 
 # name of the perf data file, only used by the clean target
 PERF_FILE = perf.data*
@@ -144,44 +140,8 @@ alltests: $(TESTS)
 # make clean - remove .o files, executables, tarball
 clean:
 	rm -f $(OBJECTS) $(EXECUTABLE) $(EXECUTABLE)_debug $(EXECUTABLE)_profile \
-      $(TESTS) $(PARTIAL_SUBMITFILE) $(FULL_SUBMITFILE) $(PERF_FILE)
+      $(TESTS) $(PERF_FILE)
 	rm -Rf *.dSYM
-
-# make partialsubmit.tar.gz - cleans, creates tarball
-# omitting test files
-PARTIAL_SUBMITFILES=$(filter-out $(TESTSOURCES), \
-                      $(wildcard Makefile *.h *.hpp *.cpp))
-$(PARTIAL_SUBMITFILE): $(PARTIAL_SUBMITFILES)
-	rm -f $(PARTIAL_SUBMITFILE) $(FULL_SUBMITFILE)
-	COPYFILE_DISABLE=true tar -vczf $(PARTIAL_SUBMITFILE) \
-      $(PARTIAL_SUBMITFILES)
-	@echo !!! WARNING: No test files included. Use 'make fullsubmit' to include test files. !!!
-
-# make fullsubmit.tar.gz - cleans, runs dos2unix, creates tarball
-# including test files
-FULL_SUBMITFILES=$(filter-out $(TESTSOURCES), \
-                   $(wildcard Makefile *.h *.hpp *.cpp test*.txt))
-$(FULL_SUBMITFILE): $(FULL_SUBMITFILES)
-	rm -f $(PARTIAL_SUBMITFILE) $(FULL_SUBMITFILE)
-	COPYFILE_DISABLE=true tar -vczf $(FULL_SUBMITFILE) $(FULL_SUBMITFILES)
-	@echo !!! Final submission prepared, test files included... READY FOR GRADING !!!
-
-# shortcut for make submit tarballs
-partialsubmit: identifier $(PARTIAL_SUBMITFILE)
-fullsubmit: identifier $(FULL_SUBMITFILE)
-
-sync2caen: REMOTE_PATH := ${REMOTE_BASEDIR}_${EXECUTABLE}_sync
-sync2caen:
-	# Synchronize local files into target directory on CAEN
-	rsync \
-      -av \
-      --exclude '.git*' \
-      --exclude '.vs*' \
-      --exclude '*.code-workspace' \
-      --filter=":- .gitignore" \
-      "."/ \
-      "login.engin.umich.edu:'${REMOTE_PATH}/'"
-	echo "Files synced to CAEN at ~/${REMOTE_PATH}/"
 
 define MAKEFILE_HELP
 EECS281 Advanced Makefile Help
@@ -194,24 +154,6 @@ EECS281 Advanced Makefile Help
        b. Set PROJECTFILE equal to the name of the source file with main()
        c. Add any dependency rules specific to your files.
     2. Build, test, submit... repeat as necessary.
-
-* Preparing submissions
-    A) To build 'partialsubmit.tar.gz', a tarball without tests used to
-       find buggy solutions in the autograder.
-
-           *** USE THIS ONLY FOR TESTING YOUR SOLUTION! ***
-
-       This is useful for faster autograder runs during development and
-       free submissions if the project does not build.
-           $$ make partialsubmit
-    B) Build 'fullsubmit.tar.gz' a tarball complete with autograder test
-       files.
-
-           *** ALWAYS USE THIS FOR FINAL GRADING! ***
-
-       It is also useful when trying to find buggy solutions in the
-       autograder.
-           $$ make fullsubmit
 
 * Unit testing support
     A) Source files for unit testing should be named test*.cpp.  Examples
@@ -267,8 +209,9 @@ help:
 # % g++ -MM *.cpp
 #
 # ADD YOUR OWN DEPENDENCIES HERE
-market: Market.o P2random.h xcode_redirect.hpp stocks.cpp
-Market.o: Market.h Market.cpp
+sudoko: Grid.o solver.o sudoku.cpp
+Grid.o: Grid.h Grid.cpp
+solver.o: solver.h solver.cpp
 ######################
 # TODO (end) #
 ######################
