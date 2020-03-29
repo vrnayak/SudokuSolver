@@ -142,7 +142,7 @@ bool fileComp(string fileName1, string fileName2) {
 	while (file1 >> cell1)
 		grid.push_back(cell1);
 
-	int counter = 0;
+	size_t counter = 0;
 	while (file2 >> cell2) {
 		if (grid[counter++] != cell2)
 			return false;
